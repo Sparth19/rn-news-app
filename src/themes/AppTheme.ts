@@ -3,6 +3,11 @@ import {size} from './Metrics';
 export const Colors: {[key: string]: string} = {
   white: '#FFFFFF',
   black: '#000000',
+  primary: '#1877F2',
+  greyTheme1: '#4E4B66',
+  greyTheme2: '#667080',
+  greyTheme3: '#A0A3BD',
+  greyTheme4: '#EEF1F4',
 };
 
 export const FONTS: {[key: string]: string} = {
