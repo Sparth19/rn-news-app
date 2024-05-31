@@ -126,7 +126,7 @@ const NewsDetailScreen: FC<Props> = ({navigation, route}) => {
               {headline.description}
             </Text>
             <Text style={[themeStyles.secText, styles.authorText]}>
-              {`Authour : ${headline.author}`}
+              {`Author : ${headline.author}`}
             </Text>
           </View>
         </>

@@ -12,6 +12,8 @@ export const fetchHeadlines = async () => {
         apiKey: API_KEY,
         domains: 'techcrunch.com,thenextweb.com,ign.com',
         language: 'en',
+        page: 1,
+        //due to api restrictions only page 1 is available with 100 data
       },
     });
 

@@ -55,9 +55,6 @@ const HomeScreen: FC = ({navigation}) => {
   }, [navigation, theme]);
 
   useEffect(() => {
-    // dispatch(fetchHeadlines());
-    // dispatch(loadTheme());
-
     const initializeApp = async () => {
       try {
         await dispatch(fetchHeadlines()).unwrap();
@@ -73,7 +70,7 @@ const HomeScreen: FC = ({navigation}) => {
   }, [dispatch]);
 
   useEffect(() => {
-    // startTimer();
+    startTimer();
     return () => stopTimer(); // Cleanup on unmount
   }, [headlines]);
 
@@ -159,7 +156,9 @@ const HomeScreen: FC = ({navigation}) => {
   if (error) {
     return (
       <View style={[themeStyles.container, styles.container]}>
-        <Text style={[themeStyles.errorText, styles.errorText]}>{error}</Text>
+        <Text style={[themeStyles.errorText, styles.errorText]}>
+          Something went wrong!
+        </Text>
         <TouchableOpacity onPress={handleFetchNextBatch}>
           <Text style={styles.headerTitle}>Retry</Text>
         </TouchableOpacity>

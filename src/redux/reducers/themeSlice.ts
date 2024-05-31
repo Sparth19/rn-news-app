@@ -15,8 +15,6 @@ const initialState: ThemeState = {
   error: null,
 };
 
-console.log('THEME IN INITIALL STATE', Appearance.getColorScheme());
-
 const themeSlice = createSlice({
   name: 'theme',
   initialState,
@@ -42,7 +40,6 @@ const themeSlice = createSlice({
         state.loading = true;
       })
       .addCase(setTheme.fulfilled, (state, action: PayloadAction<string>) => {
-        console.log('payload', action.payload);
         state.loading = false;
         state.theme = action.payload;
       })
