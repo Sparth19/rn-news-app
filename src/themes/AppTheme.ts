@@ -8,6 +8,11 @@ export const Colors: {[key: string]: string} = {
   greyTheme2: '#667080',
   greyTheme3: '#A0A3BD',
   greyTheme4: '#EEF1F4',
+  error: '#C30052',
+  warning: '#F4B740',
+  success: '#00BA88',
+  darkText: '#B0B3B8',
+  darkText2: '#E4E6EB',
 };
 
 export const FONTS: {[key: string]: string} = {
