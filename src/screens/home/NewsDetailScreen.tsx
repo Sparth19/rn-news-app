@@ -93,9 +93,7 @@ const NewsDetailScreen: FC<Props> = ({navigation, route}) => {
                 resizeMode="cover"
               />
               <View style={styles.mH10}>
-                <Text
-                  style={[themeStyles.secText, styles.sourceText]}
-                  numberOfLines={2}>
+                <Text style={[themeStyles.secText, styles.sourceText]}>
                   {headline.source.name || 'source'}
                 </Text>
                 <Text style={[themeStyles.secText, styles.secText]}>{`${moment(
@@ -119,14 +117,14 @@ const NewsDetailScreen: FC<Props> = ({navigation, route}) => {
               style={styles.image}
               resizeMode="cover"
             />
-            <Text style={[themeStyles.title, styles.title]} numberOfLines={2}>
+            <Text style={[themeStyles.title, styles.title]}>
               {headline.title}
             </Text>
             <Text style={[themeStyles.secText, styles.secText]}>
               {headline.description}
             </Text>
             <Text style={[themeStyles.secText, styles.authorText]}>
-              {`Author : ${headline.author}`}
+              {`Authour : ${headline.author}`}
             </Text>
           </View>
         </>
