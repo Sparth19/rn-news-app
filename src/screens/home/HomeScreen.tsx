@@ -15,12 +15,11 @@ import {
   TouchableOpacity,
   StatusBar,
 } from 'react-native';
-// import SplashScreen from 'react-native-splash-screen';
+import SplashScreen from 'react-native-splash-screen';
 import {Colors, FONTS, FONT_SIZE} from '../../themes/AppTheme';
 import {size} from '../../themes/Metrics';
 import {Headline} from '../../types/interfaces';
 import SwipeableHeadline from '../../components/SwipeableHeadline';
-import SvgIcon from '../../components/SvgIcon';
 import {useDispatch, useSelector} from 'react-redux';
 import {AppDispatch, RootState} from '../../redux/store';
 import {
@@ -56,8 +55,21 @@ const HomeScreen: FC = ({navigation}) => {
   }, [navigation, theme]);
 
   useEffect(() => {
-    dispatch(fetchHeadlines());
-    dispatch(loadTheme());
+    // dispatch(fetchHeadlines());
+    // dispatch(loadTheme());
+
+    const initializeApp = async () => {
+      try {
+        await dispatch(fetchHeadlines()).unwrap();
+        await dispatch(loadTheme()).unwrap();
+      } catch (error) {
+        console.error('Failed to initialize app:', error);
+      } finally {
+        SplashScreen.hide();
+      }
+    };
+
+    initializeApp();
   }, [dispatch]);
 
   useEffect(() => {
@@ -157,7 +169,7 @@ const HomeScreen: FC = ({navigation}) => {
   return (
     <SafeAreaView style={[themeStyles.container, styles.screen]}>
       <StatusBar
-        backgroundColor={themeStyles.container.backgroundColor}
+        backgroundColor={theme === 'light' ? Colors.white : Colors.black}
         barStyle={theme === 'light' ? 'dark-content' : 'light-content'}
         animated
       />
