@@ -1,5 +1,5 @@
 import React, {memo, useRef} from 'react';
-import {Animated, StyleSheet, Text, View} from 'react-native';
+import {Animated, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import {Headline} from '../types/interfaces';
 import moment from 'moment';
 import {size} from '../themes/Metrics';
@@ -12,6 +12,7 @@ import {RootState} from '../redux/store';
 import IconMaterial from 'react-native-vector-icons/MaterialIcons';
 
 interface SwipeableHeadlineProps {
+  navigation: any;
   headline: Headline;
   index: string;
   isPinned: boolean;
@@ -21,12 +22,19 @@ interface SwipeableHeadlineProps {
 }
 
 const SwipeableHeadline = memo((props: SwipeableHeadlineProps) => {
-  const {headline, index, onDelete, onPin, isPinned, pinnedLength} = props;
+  const {navigation, headline, index, onDelete, onPin, isPinned, pinnedLength} =
+    props;
   const swipeableRef = useRef(null);
   const swipeTranslation = React.useRef(new Animated.Value(0)).current;
 
   const {theme} = useSelector((state: RootState) => state.theme);
   const themeStyles = theme === 'light' ? lightStyles : darkStyles;
+
+  const navigateToDetail = headline => {
+    navigation.navigate('NewsDetailScreen', {
+      headline,
+    });
+  };
 
   const handleSwipeOpen = () => {
     Animated.spring(swipeTranslation, {
@@ -53,12 +61,18 @@ const SwipeableHeadline = memo((props: SwipeableHeadlineProps) => {
 
   const renderRightActions = () => (
     <View style={styles.deleteButton}>
+      <IconMaterial name={'delete'} size={size(25)} color={Colors.white} />
       <Text style={styles.buttonText}>Delete</Text>
     </View>
   );
 
   const renderLeftActions = () => (
     <View style={styles.pinButton}>
+      <IconMaterial
+        name={isPinned ? 'bookmark-outline' : 'bookmark'}
+        size={size(25)}
+        color={Colors.white}
+      />
       <Text style={styles.buttonText}>{isPinned ? 'Unpin' : 'Pin'}</Text>
     </View>
   );
@@ -76,82 +90,86 @@ const SwipeableHeadline = memo((props: SwipeableHeadlineProps) => {
         if (direction === 'left') handlePin();
         else handleDelete();
       }}>
-      <Animated.View
-        style={[
-          themeStyles.headlineContainer,
-          styles.headlineContainer,
-          {transform: [{translateX: swipeTranslation}]},
-        ]}
-        key={index}>
-        <FastImage
-          source={{uri: headline.urlToImage}}
-          style={styles.image}
-          resizeMode="cover"
-        />
-        <View style={styles.rightView}>
-          <View style={styles.rowBetween}>
-            <Text
-              style={[themeStyles.secText, styles.secText]}
-              numberOfLines={2}>
-              {headline.author || 'Author'}
-            </Text>
-            {isPinned ? (
-              <IconMaterial
-                name={'bookmark'}
-                size={size(20)}
-                color={Colors.greyTheme3}
-              />
-            ) : null}
-          </View>
-          <Text style={[themeStyles.title, styles.title]} numberOfLines={2}>
-            {headline.title}
-          </Text>
-          <View style={styles.rowBetween}>
-            <View style={styles.centerRow}>
-              {headline.source.id ? (
-                <FastImage
-                  source={getImage(headline.source.id || '')}
-                  style={styles.logo}
-                  resizeMode="cover"
+      <TouchableOpacity
+        activeOpacity={1}
+        onPress={() => navigateToDetail(headline)}>
+        <Animated.View
+          style={[
+            themeStyles.headlineContainer,
+            styles.headlineContainer,
+            {transform: [{translateX: swipeTranslation}]},
+          ]}
+          key={index}>
+          <FastImage
+            source={{uri: headline.urlToImage}}
+            style={styles.image}
+            resizeMode="cover"
+          />
+          <View style={styles.rightView}>
+            <View style={styles.rowBetween}>
+              <Text
+                style={[themeStyles.secText, styles.secText]}
+                numberOfLines={2}>
+                {headline.author || 'Author'}
+              </Text>
+              {isPinned ? (
+                <IconMaterial
+                  name={'bookmark'}
+                  size={size(20)}
+                  color={Colors.primary}
                 />
               ) : null}
-              <Text
-                style={[themeStyles.secText, styles.sourceText]}
-                numberOfLines={2}>
-                {headline.source.name || 'source'}
-              </Text>
             </View>
-            <Text style={[themeStyles.secText, styles.secText]}>{`${moment(
-              headline.publishedAt,
-            )
-              .startOf('day')
-              .fromNow()}`}</Text>
+            <Text style={[themeStyles.title, styles.title]} numberOfLines={2}>
+              {headline.title}
+            </Text>
+            <View style={styles.rowBetween}>
+              <View style={styles.centerRow}>
+                {headline.source.id ? (
+                  <FastImage
+                    source={getImage(headline.source.id || '')}
+                    style={styles.logo}
+                    resizeMode="cover"
+                  />
+                ) : null}
+                <Text
+                  style={[themeStyles.secText, styles.sourceText]}
+                  numberOfLines={2}>
+                  {headline.source.name || 'source'}
+                </Text>
+              </View>
+              <Text style={[themeStyles.secText, styles.secText]}>{`${moment(
+                headline.publishedAt,
+              )
+                .startOf('day')
+                .fromNow()}`}</Text>
+            </View>
           </View>
-        </View>
-      </Animated.View>
+        </Animated.View>
+      </TouchableOpacity>
     </Swipeable>
   );
 });
 
 export default SwipeableHeadline;
 
-const lightStyles = {
+const lightStyles = StyleSheet.create({
   headlineContainer: {
     backgroundColor: Colors.white,
     borderBottomColor: Colors.greyTheme4,
   },
   title: {color: Colors.black},
   secText: {color: Colors.greyTheme1},
-};
+});
 
-const darkStyles = {
+const darkStyles = StyleSheet.create({
   headlineContainer: {
     backgroundColor: Colors.black,
     borderBottomColor: Colors.greyTheme1,
   },
   title: {color: Colors.darkText2},
   secText: {color: Colors.darkText},
-};
+});
 
 const styles = StyleSheet.create({
   headlineContainer: {

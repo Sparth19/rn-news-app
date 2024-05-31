@@ -144,6 +144,7 @@ const HomeScreen: FC = ({navigation}) => {
       onPin={handlePinHeadline}
       isPinned={!!(pinnedHeadlines.findIndex(pin => pin.id === item.id) > -1)}
       pinnedLength={pinnedHeadlines.length}
+      navigation={navigation}
     />
   );
 
@@ -197,15 +198,15 @@ const HomeScreen: FC = ({navigation}) => {
 
 export default HomeScreen;
 
-const lightStyles = {
+const lightStyles = StyleSheet.create({
   container: {backgroundColor: Colors.white},
   errorText: {color: Colors.error},
-};
+});
 
-const darkStyles = {
+const darkStyles = StyleSheet.create({
   container: {backgroundColor: Colors.black},
   errorText: {color: Colors.white},
-};
+});
 
 const styles = StyleSheet.create({
   screen: {
