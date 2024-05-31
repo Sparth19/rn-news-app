@@ -145,14 +145,6 @@ const HomeScreen: FC = ({navigation}) => {
     />
   );
 
-  if (loading) {
-    return (
-      <View style={[themeStyles.container, styles.container]}>
-        <ActivityIndicator size="large" color={Colors.primary} />
-      </View>
-    );
-  }
-
   if (error) {
     return (
       <View style={[themeStyles.container, styles.container]}>
@@ -173,7 +165,11 @@ const HomeScreen: FC = ({navigation}) => {
         barStyle={theme === 'light' ? 'dark-content' : 'light-content'}
         animated
       />
-      {pinnedHeadlines.length || headlines.length ? (
+      {loading ? (
+        <View style={[themeStyles.container, styles.container]}>
+          <ActivityIndicator size="large" color={Colors.primary} />
+        </View>
+      ) : pinnedHeadlines.length || headlines.length ? (
         <FlatList
           nestedScrollEnabled
           data={[...pinnedHeadlines, ...headlines]}

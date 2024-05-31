@@ -9,15 +9,15 @@ import store from './src/redux/store';
 
 const App: React.FC = () => {
   return (
-    <SafeAreaProvider>
-      <GestureHandlerRootView>
+    <GestureHandlerRootView>
+      <SafeAreaProvider>
         <StoreProvider store={store}>
           <NavigationContainer>
             <AppNavigator />
           </NavigationContainer>
         </StoreProvider>
-      </GestureHandlerRootView>
-    </SafeAreaProvider>
+      </SafeAreaProvider>
+    </GestureHandlerRootView>
   );
 };
 
