@@ -18,7 +18,6 @@ export const fetchHeadlines = async () => {
     });
 
     if (response.status === 200) {
-      console.log('response.data.articles', response.data.articles.length);
       return sanitizeNewsData(response.data.articles || []);
     } else {
       throw new Error('Failed to fetch headlines');

@@ -24,28 +24,19 @@ interface SwipeableHeadlineProps {
 const SwipeableHeadline = memo((props: SwipeableHeadlineProps) => {
   const {navigation, headline, index, onDelete, onPin, isPinned, pinnedLength} =
     props;
-  const swipeableRef = useRef(null);
-  const swipeTranslation = React.useRef(new Animated.Value(0)).current;
+  const swipeableRef = useRef<Swipeable>(null);
 
   const {theme} = useSelector((state: RootState) => state.theme);
   const themeStyles = theme === 'light' ? lightStyles : darkStyles;
 
-  const navigateToDetail = headline => {
+  const navigateToDetail = (headline: Headline) => {
     navigation.navigate('NewsDetailScreen', {
       headline,
     });
   };
 
-  const handleSwipeOpen = () => {
-    Animated.spring(swipeTranslation, {
-      toValue: 0,
-      useNativeDriver: true,
-    }).start();
-  };
-
   const handlePin = () => {
     onPin(headline, isPinned);
-    handleSwipeOpen();
     if (swipeableRef.current) {
       swipeableRef.current.close();
     }
@@ -53,7 +44,6 @@ const SwipeableHeadline = memo((props: SwipeableHeadlineProps) => {
 
   const handleDelete = () => {
     onDelete(headline);
-    handleSwipeOpen();
     if (swipeableRef.current) {
       swipeableRef.current.close();
     }
@@ -93,12 +83,8 @@ const SwipeableHeadline = memo((props: SwipeableHeadlineProps) => {
       <TouchableOpacity
         activeOpacity={1}
         onPress={() => navigateToDetail(headline)}>
-        <Animated.View
-          style={[
-            themeStyles.headlineContainer,
-            styles.headlineContainer,
-            {transform: [{translateX: swipeTranslation}]},
-          ]}
+        <View
+          style={[themeStyles.headlineContainer, styles.headlineContainer]}
           key={index}>
           <FastImage
             source={{uri: headline.urlToImage}}
@@ -125,9 +111,9 @@ const SwipeableHeadline = memo((props: SwipeableHeadlineProps) => {
             </Text>
             <View style={styles.rowBetween}>
               <View style={styles.centerRow}>
-                {headline.source.id ? (
+                {headline.source && headline.source.id ? (
                   <FastImage
-                    source={getImage(headline.source.id || '')}
+                    source={getImage(headline.source.id)}
                     style={styles.logo}
                     resizeMode="cover"
                   />
@@ -145,7 +131,7 @@ const SwipeableHeadline = memo((props: SwipeableHeadlineProps) => {
                 .fromNow()}`}</Text>
             </View>
           </View>
-        </Animated.View>
+        </View>
       </TouchableOpacity>
     </Swipeable>
   );
